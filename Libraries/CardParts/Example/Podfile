@@ -1,0 +1,14 @@
+use_frameworks!
+
+platform :ios, '10.0'
+
+workspace 'CardParts'
+
+target 'CardParts_Example' do
+    pod 'CardParts'
+end
+
+target 'CardParts_Tests' do
+    pod 'CardParts'
+end
+

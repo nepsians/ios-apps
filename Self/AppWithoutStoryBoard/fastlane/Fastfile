@@ -1,0 +1,35 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Downloading & Setting up certificates\n Building ipa file"
+
+  lane :test do 
+    match(type: "adhoc",  
+      app_identifier: "com.gurzu.kryptonite",
+      readonly: true, 
+      clone_branch_directly: true)
+
+    mapping = Actions.lane_context[
+        SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING
+      ]
+
+    puts mapping
+
+    update_code_signing_settings(
+      profile_name: mapping["com.gurzu.kryptonite"],
+      team_id: "2T9WG6VM34",
+      code_sign_identity: "Apple Distribution: Gurzu Inc (2T9WG6VM34)"
+    )
+
+    gym(
+        workspace: "AppWithoutStoryBoard.xcworkspace",
+        scheme: "NihalApp",
+        configuration: "Release",
+        clean: true,
+        export_method: "ad-hoc",
+        output_directory:"./build/",
+        output_name: "test_prod.ipa"
+    )
+  end
+
+end
